@@ -1,12 +1,30 @@
 from fastapi import FastAPI, status, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import date
 from connection import con_engine
 from sqlalchemy import text
 from fastapi.security import OAuth2PasswordBearer
 import pandas as pd
 from objects import Emprestimo
+from os import environ
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
+
+origins = [
+    'http://localhost',
+    environ['FRONT_URL']
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

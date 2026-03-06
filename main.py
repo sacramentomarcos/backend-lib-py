@@ -97,5 +97,5 @@ async def fecha_emprestimo(id_emprestimos:list[int]):
     except Exception as e:
         print(e)
         return {'[ERRO]': e}
-# @app.get('/')
+##PROXIMA ROTA: ALL_usuarios
 

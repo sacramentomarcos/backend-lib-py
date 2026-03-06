@@ -15,6 +15,7 @@ app = FastAPI()
 
 origins = [
     'http://localhost',
+    '0.0.0.0:8000',
     environ['FRONT_URL']
 ]
 

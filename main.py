@@ -2,10 +2,14 @@ from fastapi import FastAPI, status, HTTPException
 from datetime import date
 from connection import con_engine
 from sqlalchemy import text
+from fastapi.security import OAuth2PasswordBearer
 import pandas as pd
 from objects import Emprestimo
 
 app = FastAPI()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 engine = con_engine()
 
 @app.get('/emprestimos/atual', status_code=status.HTTP_200_OK)
@@ -35,14 +39,17 @@ async def busca_todos_emprestimos():
 async def cria_emprestimo(emprestimo:Emprestimo):
     try:
         with engine.connect() as con:
-            con.execute(text(f'''INSERT INTO emprestimos
+            con.execute(text("""
+                        INSERT INTO emprestimos
                         (id_livro, id_usuario, data_previsao_devolucao_em, data_realizado_em)
-                        values (
-                        {emprestimo.id_livro},
-                        '{emprestimo.id_usuario}',
-                        '{emprestimo.data_previsao_devolucao_em}',
-                        '{emprestimo.data_realizado_em}'
-                        )'''))
+                        VALUES (:id_livro, :id_usuario, :data_previsao_devolucao_em, :data_realizado_em)
+                    """),
+                    {
+                        "id_livro": emprestimo.id_livro,
+                        "id_usuario": emprestimo.id_usuario,
+                        "data_previsao_devolucao_em": emprestimo.data_previsao_devolucao_em,
+                        "data_realizado_em": emprestimo.data_realizado_em
+                    })
             con.commit()
         return dict(emprestimo)
     except Exception as e:
@@ -59,9 +66,13 @@ async def fecha_emprestimo(id_emprestimos:list[int]):
                 con.execute(text(f'''
                                 UPDATE emprestimos
                                 SET status = FALSE,
-                                data_devolucao_em = '{hoje.isoformat()}'
-                                WHERE id_emprestimo = {id}
-                                '''))
+                                data_devolucao_em = :data_devolucao
+                                WHERE id_emprestimo = :id_emprestimo
+                                '''),
+                                {
+                                'data_devolucao': hoje.isoformat(),
+                                'id_emprestimo': id
+                                })
             con.commit()
         return id_emprestimos
     except Exception as e:

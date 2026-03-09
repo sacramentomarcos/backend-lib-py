@@ -104,4 +104,4 @@ def todos_usuarios():
         usuarios:pd.DataFrame = pd.read_sql('select * from usuarios')
         return usuarios.to_dict(orient='records')
     except Exception as e:
-        raise HTTPException('deu ruim')
+        raise HTTPException(400)

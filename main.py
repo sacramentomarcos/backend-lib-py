@@ -105,4 +105,3 @@ def todos_usuarios():
         return usuarios.to_dict(orient='records')
     except Exception as e:
         raise HTTPException('deu ruim')
-

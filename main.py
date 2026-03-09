@@ -98,4 +98,11 @@ async def fecha_emprestimo(id_emprestimos:list[int]):
         print(e)
         return {'[ERRO]': e}
 ##PROXIMA ROTA: ALL_usuarios
+@app.get('/usuarios')
+def todos_usuarios():
+    try:
+        usuarios:pd.DataFrame = pd.read_sql('select * from usuarios')
+        return usuarios.to_dict(orient='records')
+    except Exception as e:
+        raise HTTPException('deu ruim')
 

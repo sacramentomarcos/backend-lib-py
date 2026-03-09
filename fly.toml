@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for backend-kids-library-6nzgvw on 2026-03-06T17:06:06Z
+# fly.toml app configuration file generated for backend-lib-py on 2026-03-06T17:29:09Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'backend-kids-library-6nzgvw'
+app = 'backend-lib-py'
 primary_region = 'iad'
 
 [build]

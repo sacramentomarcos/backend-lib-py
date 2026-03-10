@@ -112,7 +112,8 @@ async def livro_por_isbn(isbn:str):
         raise HTTPException(400, 'ISBN não enviado')
     with engine.connect() as con:
         resultado = con.execute(text('select * from livros where isbn = :isbn'), {'isbn':isbn})
-        livro = pd.DataFrame(resultado.mappings().first())
-    if livro.empty:
-        raise HTTPException(400, 'Livro deste ISBN não cadastrado, ou inexistente')
-    return livro.to_dict('records')
+        # if resultado.:
+        #     raise HTTPException(400, 'Livro deste ISBN não cadastrado, ou inexistente')
+        livro = pd.DataFrame(resultado.mappings()).to_dict('records')
+    
+    return livro[0]

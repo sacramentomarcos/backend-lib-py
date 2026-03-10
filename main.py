@@ -66,8 +66,8 @@ async def cria_emprestimo(emprestimo:Emprestimo):
                     {
                         "id_livro": emprestimo.id_livro,
                         "id_usuario": emprestimo.id_usuario,
-                        "data_previsao_devolucao_em": emprestimo.data_previsao_devolucao_em,
-                        "data_realizado_em": emprestimo.data_realizado_em
+                        "data_previsao_devolucao_em": emprestimo.data_previsao_devolucao_em.date(),
+                        "data_realizado_em": emprestimo.data_realizado_em.date()
                     })
             con.commit()
         return dict(emprestimo)

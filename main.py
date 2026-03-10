@@ -99,7 +99,7 @@ async def fecha_emprestimo(id_emprestimos:list[int]):
         return {'[ERRO]': e}
 ##PROXIMA ROTA: ALL_usuarios
 @app.get('/usuarios')
-def todos_usuarios():
+async def todos_usuarios():
     try:
         usuarios:pd.DataFrame = pd.read_sql('select * from usuarios')
         return usuarios.to_dict(orient='records')

@@ -101,7 +101,7 @@ async def fecha_emprestimo(id_emprestimos:list[int]):
 @app.get('/usuarios')
 async def todos_usuarios():
     try:
-        usuarios:pd.DataFrame = pd.read_sql('select * from usuarios')
+        usuarios:pd.DataFrame = pd.read_sql('select * from usuarios', con=engine)
         return usuarios.to_dict(orient='records')
     except Exception as e:
         raise HTTPException(400, detail=f'{e}')

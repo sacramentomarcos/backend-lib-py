@@ -105,3 +105,16 @@ async def todos_usuarios():
         return usuarios.to_dict(orient='records')
     except Exception as e:
         raise HTTPException(400, detail=f'{e}')
+
+@app.get('/livros/:isbn')
+async def livro_por_isbn(isbn:str):
+    try:
+        if not isbn:
+            raise HTTPException(400, 'ISBN não enviado')
+        livro: pd.DataFrame = pd.read_sql_query('select * from livros where isbn = :isbn', {'isbn':isbn})
+        if livro.count(axis=1) <= 0:
+            raise HTTPException(400, 'Livro deste ISBN não cadastrado, ou inexistente')
+        livro_tratado = livro.to_dict('records')
+        return livro_tratado
+    except Exception as e:
+        raise HTTPException(400, detail=f'{e}')

@@ -54,6 +54,7 @@ async def busca_todos_emprestimos():
     except Exception as e:
         print(e)
         return {f'[ERRO]':e}
+    
 @app.post('/emprestimos', status_code=status.HTTP_201_CREATED)
 async def cria_emprestimo(emprestimo:Emprestimo):
     try:
@@ -117,3 +118,33 @@ async def livro_por_isbn(isbn:str):
         livro = pd.DataFrame(resultado.mappings()).to_dict('records')
     
     return livro[0]
+
+##Presencas
+@app.get('/alunos')
+async def todos_alunos():
+    df = pd.read_sql_query('select * from alunos_ebd', con=engine)
+    return df.to_dict('records')
+
+@app.get('/professores')
+async def todos_professores():
+    df = pd.read_sql_query('select * from preforessores_ebd', con=engine)
+    return df.to_dict('records')
+
+@app.get('/classes')
+async def todas_classes():
+    df = pd.read_sql_query('select * from classes_ebd', con=engine)
+    return df.to_dict('records')
+
+@app.get('/presencas_ebd')
+async def todas_presencas():
+    df = pd.read_sql_query('select * from presencas_ebd', con=engine)
+    return df.to_dict('records')
+
+@app.get('/classes/{id_classe}/alunos/')
+async def alunos_por_classe(id_classe:int):
+    query = text('''select * from alunos_ebd
+            where id_classe = :id_classe
+            ''')
+    df = pd.read_sql_query(query, con=engine,
+                           params={'id_classe': id_classe})
+    return df.to_dict('records')
